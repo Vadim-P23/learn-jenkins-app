@@ -95,6 +95,11 @@ pipeline {
         }
 
         stage('Prod E2E') {
+
+            environment{
+            CI_ENVIRONMENT_URL = 'https://lively-mochi-c6e434.netlify.app'
+            }
+
             agent {
                 docker {
                     image 'mcr.microsoft.com/playwright:v1.39.0-jammy'
@@ -103,9 +108,6 @@ pipeline {
             }
             steps {
                 sh '''
-                    npm install serve  
-                    node_modules/.bin/serve -s build &
-                    sleep 10
                     npx playwright test --reporter=html    
                 '''
             }
